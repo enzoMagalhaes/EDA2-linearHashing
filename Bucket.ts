@@ -12,7 +12,11 @@ export class Bucket {
   public pop() {
     const value = this.values.pop();
     if (this.values.length == 0 && this.previous) {
-      this.previous!.next = this.next;
+      if (this.next) {
+        this.previous!.next = this.next;
+      } else {
+        this.previous.next = null;
+      }
     }
 
     return value;
@@ -23,8 +27,8 @@ export class BucketList {
   public head: Bucket;
   private tail: Bucket;
 
-  constructor(private m: number = 2) {
-    const initialBucket = new Bucket(this.m);
+  constructor(private p: number = 2) {
+    const initialBucket = new Bucket(this.p);
     this.head = initialBucket;
     this.tail = initialBucket;
   }
@@ -32,8 +36,8 @@ export class BucketList {
   public insert(value: number): number {
     let return_value;
     // if tail is full, create a new Bucket in the list
-    if (this.tail.values.length == this.m) {
-      const newBucket = new Bucket(this.m);
+    if (this.tail.values.length == this.p) {
+      const newBucket = new Bucket(this.p);
       this.tail.next = newBucket;
       newBucket.previous = this.tail;
       this.tail = newBucket;
@@ -47,11 +51,26 @@ export class BucketList {
     return return_value;
   }
 
-  public remove(bucket: Bucket, index: number) {
-    if (bucket != this.tail || index != this.m - 1) {
-      bucket.values[index] = this.tail.pop()!;
-    } else {
-      this.tail.pop();
+  public remove(value: number) {
+    let currentBucket: Bucket | null = this.head;
+    while (currentBucket) {
+      for (let i = 0; i < currentBucket.values.length; i++) {
+        if (currentBucket.values[i] == value) {
+          
+          if (currentBucket != this.tail || i != currentBucket.values.length - 1) {
+            currentBucket.values[i] = this.tail.pop()!;
+
+            if (this.tail.values.length == 0) {
+              this.tail = this.tail.previous!;
+            }
+          } else {
+            this.tail.pop();
+          }
+
+          break;
+        }
+      }
+      currentBucket = currentBucket.next;
     }
   }
 
@@ -83,3 +102,23 @@ export class BucketList {
 // // list.remove(list.head, 1);
 
 // list.print();
+
+
+
+
+const list = new BucketList(5);
+
+list.insert(7750);
+list.insert(5308);
+list.insert(7590);
+list.insert(5508);
+
+list.print();
+
+list.remove(7750);
+list.print();
+list.remove(7590);
+
+list.print();
+
+
