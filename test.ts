@@ -17,18 +17,21 @@ function generate_keys(p: number, min: number = 1, max: number = 10000) {
   return keys;
 }
 
-const linearHashing = new LinearHashing(5, 0.8);
-const keys = generate_keys(5);
+for (var p of test_ps) {
+  for (var alpha of test_alphas) {
 
-for (let i = 0; i < keys.length; i++) {
-  try {
-    linearHashing.insert(keys[i]);
-  } catch {
+    const linearHashing = new LinearHashing(p, alpha);
+    const keys = generate_keys(p);
+
     for (let i = 0; i < keys.length; i++) {
-      console.log(keys[i]);
+      try {
+        linearHashing.insert(keys[i]);
+      } catch {
+        for (let i = 0; i < keys.length; i++) {
+          console.log(keys[i]);
+        }
+        throw Error("error");
+      }
     }
-    throw Error("error")
   }
 }
-
-linearHashing.print();

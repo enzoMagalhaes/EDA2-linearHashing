@@ -8,19 +8,6 @@ export class Bucket {
     this.next = null;
     this.values = [];
   }
-
-  public pop() {
-    const value = this.values.pop();
-    if (this.values.length == 0 && this.previous) {
-      if (this.next) {
-        this.previous!.next = this.next;
-      } else {
-        this.previous.next = null;
-      }
-    }
-
-    return value;
-  }
 }
 
 export class BucketList {
@@ -34,7 +21,8 @@ export class BucketList {
   }
 
   public insert(value: number): number {
-    let return_value;
+    let return_value; // returns 1 if a new bucket is created, 0 otherwise
+
     // if tail is full, create a new Bucket in the list
     if (this.tail.values.length == this.p) {
       const newBucket = new Bucket(this.p);
@@ -49,29 +37,6 @@ export class BucketList {
 
     this.tail.values.push(value);
     return return_value;
-  }
-
-  public remove(value: number) {
-    let currentBucket: Bucket | null = this.head;
-    while (currentBucket) {
-      for (let i = 0; i < currentBucket.values.length; i++) {
-        if (currentBucket.values[i] == value) {
-          
-          if (currentBucket != this.tail || i != currentBucket.values.length - 1) {
-            currentBucket.values[i] = this.tail.pop()!;
-
-            if (this.tail.values.length == 0) {
-              this.tail = this.tail.previous!;
-            }
-          } else {
-            this.tail.pop();
-          }
-
-          break;
-        }
-      }
-      currentBucket = currentBucket.next;
-    }
   }
 
   public print() {
@@ -98,27 +63,4 @@ export class BucketList {
 // list.insert(1);
 // list.insert(3);
 
-// list.remove(list.head, 1);
-// // list.remove(list.head, 1);
-
 // list.print();
-
-
-
-
-const list = new BucketList(5);
-
-list.insert(7750);
-list.insert(5308);
-list.insert(7590);
-list.insert(5508);
-
-list.print();
-
-list.remove(7750);
-list.print();
-list.remove(7590);
-
-list.print();
-
-
