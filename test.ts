@@ -11,7 +11,7 @@ function getRandomInt(min: number, max: number): number {
 
 function generate_keys(p: number, min: number = 1, max: number = 10000) {
   const keys: number[] = [];
-  for (let i = 0; i < p * 100; i++) {
+  for (let i = 0; i < p * 1000; i++) {
     keys.push(getRandomInt(min, max));
   }
   return keys;
@@ -19,7 +19,6 @@ function generate_keys(p: number, min: number = 1, max: number = 10000) {
 
 for (var p of test_ps) {
   for (var alpha of test_alphas) {
-
     const linearHashing = new LinearHashing(p, alpha);
     const keys = generate_keys(p);
 
