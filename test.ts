@@ -17,20 +17,35 @@ function generate_keys(p: number, min: number = 1, max: number = 10000) {
   return keys;
 }
 
+function round(number:number){
+  return Math.round(number * 100) / 100
+}
+
+function avg(numbers: number[]) {
+  const sum = numbers.reduce((acc, currentValue) => acc + currentValue, 0);
+  return round(sum / numbers.length);
+}
+
 for (var p of test_ps) {
   for (var alpha of test_alphas) {
-    const linearHashing = new LinearHashing(p, alpha);
-    const keys = generate_keys(p);
+    const alphas: number[] = [];
+    const pStars: number[] = [];
 
-    for (let i = 0; i < keys.length; i++) {
-      try {
+    for (let i = 0; i < 10; i++) {
+      const linearHashing = new LinearHashing(p, alpha);
+      const keys = generate_keys(p);
+      for (let i = 0; i < keys.length; i++) {
         linearHashing.insert(keys[i]);
-      } catch {
-        for (let i = 0; i < keys.length; i++) {
-          console.log(keys[i]);
-        }
-        throw Error("error");
       }
+
+      alphas.push(linearHashing.alpha);
+      pStars.push(linearHashing.pStar);
     }
+
+    console.log(
+      `CONFIG: {p: ${p}, maxAlpha: ${alpha}} \naverage alpha: ${avg(
+        alphas
+      )} alphas: ${alphas}\naverage p*: ${avg(pStars)} p*s: ${pStars}`
+    );
   }
 }

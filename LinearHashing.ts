@@ -8,7 +8,7 @@ export default class LinearHashing {
   public pagesCount: number;
   constructor(
     private p: number = 2,
-    private alpha: number = 0.8,
+    private maxAlpha: number = 0.8,
     private m: number = 2
   ) {
     this.pages = new Map<number, PageList>();
@@ -37,7 +37,7 @@ export default class LinearHashing {
     this.insertInPage(index, value);
     this.elementsCount++;
 
-    while (this.elementsCount / (this.pagesCount * this.p) > this.alpha) {
+    while (this.alpha > this.maxAlpha) {
       this.reorder();
     }
   }
@@ -79,6 +79,14 @@ export default class LinearHashing {
       this.l++;
       this.N = 0;
     }
+  }
+
+  public get alpha():number{
+    return this.elementsCount / (this.pagesCount * this.p)
+  }
+
+  public get pStar(){
+    return this.pagesCount / this.pages.size
   }
 
   public print() {
