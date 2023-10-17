@@ -1,11 +1,13 @@
 class Page:
     def __init__(self, m):
+        self.m = m
         self.previous = None
         self.next = None
         self.values = []
 
+
 class PageList:
-    def __init__(self, p=2):
+    def __init__(self, p):
         self.p = p
         initial_page = Page(p)
         self.head = initial_page
@@ -26,6 +28,18 @@ class PageList:
 
         self.tail.values.append(value)
         return return_value
+
+    def search(self, k):
+        current_page = self.head
+        access_counter = 0
+        while current_page:
+            for value in current_page.values:
+                access_counter += 1
+                if value == k:
+                    return (value, access_counter)
+            current_page = current_page.next
+
+        return (-1, access_counter)
 
     def print(self):
         response = ""
