@@ -80,6 +80,14 @@ class LinearHashing:
     def p_star(self):
         return self.pages_count / len(self.page_lists)
 
+    @property
+    def l_max(self):
+        l_max = 0
+        for i in range(len(self.page_lists)):
+            if self.page_lists[i].page_count > l_max:
+                l_max = self.page_lists[i].page_count
+        return l_max
+
     def search(self, k):
         i = self.hash(k, self.l)
         if i < self.N:
@@ -90,5 +98,3 @@ class LinearHashing:
         for i in range(len(self.page_lists)):
             print(f"Page {i}:")
             self.page_lists[i].print()
-
-

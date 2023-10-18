@@ -12,9 +12,10 @@ class PageList:
         initial_page = Page(p)
         self.head = initial_page
         self.tail = initial_page
+        self.page_count = 1
 
     def insert(self, value):
-        return_value = -1
+        return_value = 0
 
         if len(self.tail.values) == self.p:
             new_page = Page(self.p)
@@ -22,9 +23,8 @@ class PageList:
             new_page.previous = self.tail
             self.tail = new_page
 
+            self.page_count += 1
             return_value = 1
-        else:
-            return_value = 0
 
         self.tail.values.append(value)
         return return_value
