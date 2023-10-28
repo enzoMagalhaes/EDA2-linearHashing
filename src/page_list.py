@@ -33,8 +33,8 @@ class PageList:
         current_page = self.head
         access_counter = 0
         while current_page:
+            access_counter += 1
             for value in current_page.values:
-                access_counter += 1
                 if value == k:
                     return (value, access_counter)
             current_page = current_page.next
